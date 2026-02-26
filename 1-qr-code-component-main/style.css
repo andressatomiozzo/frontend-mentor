@@ -1,0 +1,42 @@
+:root {
+  --cor01: #d6e2f0;
+  --cor02: #6e7e96;
+  --cor03: #1f3251;
+}
+
+.qrCode-container {
+  background-color: var(--cor01);
+  padding: 150px;
+}
+
+.qrCode-container main {
+  width: 350px;
+  border-radius: 10px;
+  background-color: white;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.qrCode-container img {
+  grid-area: 1/1;
+  width: calc(100% - 40px);
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.qrCode-content {
+  font-family: "Outfit", sans-serif;
+  margin: auto;
+  width: calc(100% - 60px);
+  text-align: center;
+}
+
+.qrCode-content h1 {
+  font-size: 1.5rem;
+  color: var(--cor03);
+}
+
+.qrCode-content p {
+  color: var(--cor02);
+}
