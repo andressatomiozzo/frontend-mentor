@@ -6,6 +6,6 @@ Desafios disponibilizados no site Frontend Mentor
 
 ## Pincipais projetos:
 ### Title
-Description
-[Ir para Title.](https://andressatomiozzo.github.io/frontend-mentor/)
+* Description
+* [Ir para Title.](https://andressatomiozzo.github.io/frontend-mentor/)<br>
 ![Imagem da página.](img/image.png)
