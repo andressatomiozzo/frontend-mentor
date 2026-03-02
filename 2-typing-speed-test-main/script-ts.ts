@@ -18,6 +18,7 @@ if (mensage.textContent.length === 0) {
         error++;
       }
     }
-    console.log(correct, error);
+    correctCount.innerText = `Acertos: ${correct}`
+    errorCount.innerText = `Erros: ${error}`;
   });
 }

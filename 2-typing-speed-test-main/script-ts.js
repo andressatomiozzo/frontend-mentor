@@ -20,6 +20,7 @@ else {
                 error++;
             }
         }
-        console.log(correct, error);
+        correctCount.innerText = `Acertos: ${correct}`;
+        errorCount.innerText = `Erros: ${error}`;
     });
 }
