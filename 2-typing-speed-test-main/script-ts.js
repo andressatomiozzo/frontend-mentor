@@ -1,19 +1,22 @@
 "use strict";
-const mensage = document.querySelector("#mensage");
+const message = document.querySelector("#message");
 const textInput = document.querySelector("#textInput");
 const correctCount = document.querySelector("#correctCount");
 const errorCount = document.querySelector("#errorCount");
-if (!mensage || !textInput || !correctCount || !errorCount)
+if (!message || !textInput || !correctCount || !errorCount)
     throw new Error("Some element is not linked to the DOM.");
-if (mensage.textContent.length === 0) {
-    console.log("ops, não tem mensagem");
+if (message.textContent.length === 0) {
+    console.log("ops, não tem messagem");
 }
 else {
+    const messageBroaken = message.textContent.split("");
+    const menssageSpan = messageBroaken.map((letter) => `<span>${letter}</span>`).join("");
+    message.innerHTML = menssageSpan;
     textInput.addEventListener("input", () => {
         let correct = 0;
         let error = 0;
         for (let i = 0; i < textInput.value.length; i++) {
-            if (mensage.textContent[i] === textInput.value[i]) {
+            if (messageText[i] === textInput.value[i]) {
                 correct++;
             }
             else {
