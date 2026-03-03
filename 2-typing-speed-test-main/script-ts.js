@@ -31,31 +31,30 @@ else {
         let correct = 0;
         let error = 0;
         messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
+        let nowTime = (Date.now() - startTime) / 1000;
         for (let i = 0; i < textInput.value.length; i++) {
-            if (i < messageSpans.length) {
-                if (i !== messageSpans.length) {
-                    if (textInput.value[i] === messageBroaken[i]) {
-                        messageSpans[i].classList.add("correct");
-                        correct++;
-                    }
-                    else {
-                        messageSpans[i].classList.add("incorrect");
-                        error++;
-                        // --------------------------- Isso aqui foi incrível ------------------
-                        i === textInput.value.length - 1 ? (errorTotal = errorTotal + 1) : errorTotal;
-                        // ---------------------------------------------------------------------
-                    }
-                    if (i === textInput.value.length - 1 && i !== messageSpans.length - 1) {
-                        messageSpans[i + 1].classList.add("active");
-                    }
+            if (i !== messageSpans.length) {
+                if (textInput.value[i] === messageBroaken[i]) {
+                    messageSpans[i].classList.add("correct");
+                    correct++;
                 }
                 else {
-                    endTime = Date.now();
-                    let elapsedTime = (endTime - startTime) / 1000;
+                    messageSpans[i].classList.add("incorrect");
+                    error++;
+                    // --------------------------- Isso aqui foi incrível ------------------
+                    i === textInput.value.length - 1 ? (errorTotal = errorTotal + 1) : errorTotal;
+                    // ---------------------------------------------------------------------
+                }
+                if (i === textInput.value.length - 1 && i !== messageSpans.length - 1) {
+                    messageSpans[i + 1].classList.add("active");
                 }
             }
             else {
                 console.log("You have completed the exercise.");
+                textInput.remove();
+                endTime = Date.now();
+                let elapsedTime = (endTime - startTime) / 1000;
+                console.log(`Time: ${elapsedTime}`);
             }
         }
         correctCount.innerText = `Acertos: ${correct}`;
