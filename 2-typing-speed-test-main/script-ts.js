@@ -10,16 +10,26 @@ if (message.textContent.length === 0) {
 }
 else {
     const messageBroaken = message.textContent.split("");
-    const menssageSpan = messageBroaken.map((letter) => `<span>${letter}</span>`).join("");
-    message.innerHTML = menssageSpan;
+    message.innerHTML = "";
+    messageBroaken.forEach((character) => {
+        const spanCharacter = document.createElement("span");
+        spanCharacter.innerText = character;
+        spanCharacter.classList.add("message-span");
+        message.appendChild(spanCharacter);
+    });
+    const messageSpans = document.querySelectorAll(".message-span");
     textInput.addEventListener("input", () => {
         let correct = 0;
         let error = 0;
         for (let i = 0; i < textInput.value.length; i++) {
-            if (messageText[i] === textInput.value[i]) {
+            let evaluatedCharacter = messageSpans[i].innerText;
+            console.log(evaluatedCharacter);
+            if (textInput.value[i] === messageBroaken[i]) {
+                messageSpans[i].classList.add("correct");
                 correct++;
             }
             else {
+                messageSpans[i].classList.add("incorrect");
                 error++;
             }
         }
