@@ -19,22 +19,43 @@ else {
     });
     const messageSpans = document.querySelectorAll(".message-span");
     let errorTotal = 0;
+    let started = false;
+    let startTime = 0;
+    let endTime = 0;
     textInput.addEventListener("input", () => {
+        if (started === false) {
+            startTime = Date.now();
+            started = true;
+        }
+        // console.log(startTime);
         let correct = 0;
         let error = 0;
         messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
         for (let i = 0; i < textInput.value.length; i++) {
-            if (textInput.value[i] === messageBroaken[i]) {
-                messageSpans[i].classList.add("correct");
-                correct++;
+            if (i < messageSpans.length) {
+                if (i !== messageSpans.length) {
+                    if (textInput.value[i] === messageBroaken[i]) {
+                        messageSpans[i].classList.add("correct");
+                        correct++;
+                    }
+                    else {
+                        messageSpans[i].classList.add("incorrect");
+                        error++;
+                        // --------------------------- Isso aqui foi incrível ------------------
+                        i === textInput.value.length - 1 ? (errorTotal = errorTotal + 1) : errorTotal;
+                        // ---------------------------------------------------------------------
+                    }
+                    if (i === textInput.value.length - 1 && i !== messageSpans.length - 1) {
+                        messageSpans[i + 1].classList.add("active");
+                    }
+                }
+                else {
+                    endTime = Date.now();
+                    let elapsedTime = (endTime - startTime) / 1000;
+                }
             }
             else {
-                messageSpans[i].classList.add("incorrect");
-                error++;
-                errorTotal++;
-            }
-            if (i === textInput.value.length - 1) {
-                messageSpans[i + 1].classList.add("active");
+                console.log("You have completed the exercise.");
             }
         }
         correctCount.innerText = `Acertos: ${correct}`;
