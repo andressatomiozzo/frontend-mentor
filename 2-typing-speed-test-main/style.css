@@ -4,4 +4,16 @@
 
 .incorrect {
     color: red;
+    text-decoration: underline;
+}
+
+.active{
+    animation: blink 1s infinite;
+}
+
+
+/* --------- Animação do caractere que está ativo --------- */
+@keyframes blink {
+  0% { background-color: black }
+  100% { background-color: rgba(0, 0, 0, 0) }
 }

@@ -18,12 +18,12 @@ else {
         message.appendChild(spanCharacter);
     });
     const messageSpans = document.querySelectorAll(".message-span");
+    let errorTotal = 0;
     textInput.addEventListener("input", () => {
         let correct = 0;
         let error = 0;
+        messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
         for (let i = 0; i < textInput.value.length; i++) {
-            let evaluatedCharacter = messageSpans[i].innerText;
-            console.log(evaluatedCharacter);
             if (textInput.value[i] === messageBroaken[i]) {
                 messageSpans[i].classList.add("correct");
                 correct++;
@@ -31,9 +31,13 @@ else {
             else {
                 messageSpans[i].classList.add("incorrect");
                 error++;
+                errorTotal++;
+            }
+            if (i === textInput.value.length - 1) {
+                messageSpans[i + 1].classList.add("active");
             }
         }
         correctCount.innerText = `Acertos: ${correct}`;
-        errorCount.innerText = `Erros: ${error}`;
+        errorCount.innerText = `Erros: ${error} Erros totais: ${errorTotal}`;
     });
 }
