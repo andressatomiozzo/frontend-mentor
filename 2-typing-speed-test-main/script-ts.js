@@ -17,18 +17,19 @@ const wpmContainer = document.querySelector("#wpm-container");
 const accuracyContainer = document.querySelector("#accuracy-container");
 if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer)
     throw new Error("Some element is not linked to the DOM.");
+const levelArray = ["easy", "medium", "hard"]; // ("easy" | "medium" | "hard") -> os únicos valores aceitos são estes
+const randomLevel = levelArray[Math.floor(Math.random() * 3)]; // Sortear um dos índices
 // Puxar os dados do data.json pra esse arquivo
 const pullData = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield fetch("data.json");
-        const dataJson = yield data.json();
-        console.log(dataJson.easy);
-        console.log(dataJson.medium);
-        console.log(dataJson.hard);
         if (!data.ok) {
             throw new Error("Ops! Something is wrong!");
         }
-        console.log("Dados: ", dataJson);
+        const dataJson = (yield data.json());
+        const chosenLevel = dataJson[randomLevel];
+        const chosenIndex = Math.floor(Math.random() * chosenLevel.length);
+        const chosenText = chosenLevel[chosenIndex];
     }
     catch (err) {
         console.log(err);

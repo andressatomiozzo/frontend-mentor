@@ -21,22 +21,25 @@ type levelsData = {
   hard: levels[];
 };
 
+const levelArray: ("easy" | "medium" | "hard")[] = ["easy", "medium", "hard"]; // ("easy" | "medium" | "hard") -> os únicos valores aceitos são estes
+const randomLevel = levelArray[Math.floor(Math.random() * 3)]; // Sortear um dos índices
+
 // Puxar os dados do data.json pra esse arquivo
 const pullData = async () => {
   try {
     const data = await fetch("data.json");
-    const dataJson = await data.json() as levelsData;
-    console.log(dataJson.easy);
-    console.log(dataJson.medium);
-    console.log(dataJson.hard);
     if (!data.ok) {
       throw new Error("Ops! Something is wrong!");
     }
-    console.log("Dados: ", dataJson);
+    const dataJson = (await data.json()) as levelsData;
+    const chosenLevel = dataJson[randomLevel];
+    const chosenIndex = Math.floor(Math.random() * chosenLevel.length);
+    const chosenText = chosenLevel[chosenIndex];
   } catch (err) {
     console.log(err);
   }
 };
+
 pullData();
 
 //Se não tiver uma mensagem como desafio ele solta um erro
