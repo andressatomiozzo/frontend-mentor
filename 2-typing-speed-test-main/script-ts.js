@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const message = document.querySelector("#message");
 const textInput = document.querySelector("#textInput");
 const correctCount = document.querySelector("#correctCount");
@@ -8,6 +17,11 @@ const wpmContainer = document.querySelector("#wpm-container");
 const accuracyContainer = document.querySelector("#accuracy-container");
 if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer)
     throw new Error("Some element is not linked to the DOM.");
+const pullData = () => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield fetch("data.json");
+    const dataJson = yield data.json();
+    console.log(dataJson);
+});
 //Se não tiver uma mensagem como desafio ele solta um erro
 if (message.textContent.length === 0) {
     console.log("ops, não tem messagem");

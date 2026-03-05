@@ -8,6 +8,13 @@ const accuracyContainer = document.querySelector<HTMLSpanElement>("#accuracy-con
 
 if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer) throw new Error("Some element is not linked to the DOM.");
 
+const pullData = async () => {
+  const data = await fetch("data.json");
+  const dataJson = await data.json()
+  console.log(dataJson);
+}
+
+
 //Se não tiver uma mensagem como desafio ele solta um erro
 if (message.textContent.length === 0) {
   console.log("ops, não tem messagem");
@@ -63,7 +70,7 @@ if (message.textContent.length === 0) {
           i === textInput.value.length - 1 ? (errorTotal = errorTotal + 1) : errorTotal;
           //// ---------------------------------------------------------------------
         }
-        
+
         // Atualizar cursor
         if (i === textInput.value.length - 1 && i !== totalLenght - 1) {
           messageSpans[i + 1].classList.add("active");
