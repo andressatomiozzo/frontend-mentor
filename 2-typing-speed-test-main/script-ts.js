@@ -17,11 +17,24 @@ const wpmContainer = document.querySelector("#wpm-container");
 const accuracyContainer = document.querySelector("#accuracy-container");
 if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer)
     throw new Error("Some element is not linked to the DOM.");
+// Puxar os dados do data.json pra esse arquivo
 const pullData = () => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield fetch("data.json");
-    const dataJson = yield data.json();
-    console.log(dataJson);
+    try {
+        const data = yield fetch("data.json");
+        const dataJson = yield data.json();
+        console.log(dataJson.easy);
+        console.log(dataJson.medium);
+        console.log(dataJson.hard);
+        if (!data.ok) {
+            throw new Error("Ops! Something is wrong!");
+        }
+        console.log("Dados: ", dataJson);
+    }
+    catch (err) {
+        console.log(err);
+    }
 });
+pullData();
 //Se não tiver uma mensagem como desafio ele solta um erro
 if (message.textContent.length === 0) {
     console.log("ops, não tem messagem");

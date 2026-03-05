@@ -6,14 +6,38 @@ const timeContainer = document.querySelector<HTMLSpanElement>("#time-container")
 const wpmContainer = document.querySelector<HTMLSpanElement>("#wpm-container");
 const accuracyContainer = document.querySelector<HTMLSpanElement>("#accuracy-container");
 
-if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer) throw new Error("Some element is not linked to the DOM.");
+if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer)
+  throw new Error("Some element is not linked to the DOM.");
 
+// Deixar claro qual o tipo de dado que o data.json vai retornar
+type levels = {
+  id: string;
+  text: string;
+};
+
+type levelsData = {
+  easy: levels[];
+  medium: levels[];
+  hard: levels[];
+};
+
+// Puxar os dados do data.json pra esse arquivo
 const pullData = async () => {
-  const data = await fetch("data.json");
-  const dataJson = await data.json()
-  console.log(dataJson);
-}
-
+  try {
+    const data = await fetch("data.json");
+    const dataJson = await data.json() as levelsData;
+    console.log(dataJson.easy);
+    console.log(dataJson.medium);
+    console.log(dataJson.hard);
+    if (!data.ok) {
+      throw new Error("Ops! Something is wrong!");
+    }
+    console.log("Dados: ", dataJson);
+  } catch (err) {
+    console.log(err);
+  }
+};
+pullData();
 
 //Se não tiver uma mensagem como desafio ele solta um erro
 if (message.textContent.length === 0) {
