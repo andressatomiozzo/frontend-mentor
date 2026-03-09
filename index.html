@@ -1,37 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
-  <title>Frontend Mentor | Typing Speed Test</title>
-  <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png" />
+    <title>Frontend Mentor | Typing Speed Test</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div>
+      <div>
+        <header>
+          <img src="assets/images/logo-small.svg" alt="Logo" />
+          <div id="best-wpm">
+            <img src="assets/images/icon-personal-best.svg" alt="Trophy" />
+            <span>Best: 92wpm</span>
+          </div>
+        </header>
 
-</head>
-<body>
+        <ul id="score">
+          <li>
+            <span class="small-text">WPM:</span>
+            <span class="big-text" id="wpm-container"></span>
+          </li>
+          <hr />
+          <li>
+            <span class="small-text">Accuracy:</span>
+            <span class="big-text" id="accuracy-container"></span>
+          </li>
+          <hr />
+          <li>
+            <span class="small-text">Time:</span>
+            <span class="big-text" id="time-container"></span>
+          </li>
+        </ul>
 
-  <button class="restart">Restart</button>
-  <p id="message">abdc efgh</p>
-  <input type="text" id="textInput">
-
-  <div>
-    <span id="correctCount"></span>
-    <span id="errorCount"></span>
-  </div>
-
-  <div>
-    <span id="time-container"></span>
-    <span id="wpm-container"></span>
-    <span id="accuracy-container">Accuracy: 100%</span>
-  </div>
-
-  <footer>
-    <div class="attribution">
-      Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.
-      Coded by <a href="#">Your Name Here</a>.
+        <div id="dificulty">
+          <select name="level" id="level">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <select name="time" id="time">
+            <option value="true">Timed (60s)</option>
+            <option value="false">Passage</option>
+          </select>
+        </div>
+      </div>
+      <p id="message">abdc efgh</p>
+      <input type="text" id="textInput" />
+      <button class="restart">Restart test</button>
     </div>
-  </footer>
 
-  <script src="script-ts.js"></script>
-</body>
+    <div>
+      <div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <span id="correctCount"></span>
+        <span id="errorCount"></span>
+      </div>
+      <div>
+        <span id="time-container"></span>
+        <span id="wpm-container"></span>
+        <span id="accuracy-container">Accuracy: 100%</span>
+      </div>
+    </div>
+
+    <footer>
+      <div class="attribution">
+        Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. Coded by <a href="#">Your Name Here</a>.
+      </div>
+    </footer>
+
+    <script src="script-ts.js"></script>
+  </body>
 </html>

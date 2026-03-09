@@ -1,19 +1,140 @@
+@font-face {
+  font-family: "Sora";
+  src: url(Sora-VariableFont_wght.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+:root {
+  --Neutral900: hsl(0, 0%, 7%);
+  --Neutral800: hsl(0, 0%, 15%);
+  --Neutral500: hsl(240, 3%, 46%);
+  --Neutral400: hsl(240, 1%, 59%);
+  --Neutral0: hsl(0, 0%, 86%);
+
+  --Blue600: hsl(214, 100%, 55%);
+  --Blue400: hsl(210, 100%, 65%);
+
+  --Red500: hsl(354, 63%, 57%);
+
+  --Green500: hsl(140, 63%, 57%);
+
+  --Yellow400: hsl(49, 85%, 70%);
+}
+
+* {
+  background-color: var(--Neutral900);
+  color: var(--Neutral0);
+  font-family: "Sora", sans-serif;
+}
+
+body {
+  margin: 20px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+}
+
+header > img {
+  height: 25px;
+}
+
+header > div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+header > div > img {
+  padding-right: 10px;
+}
+
+/* #best-wpm {
+  display: none;
+} */
+
+/* * ---------------   score  ----------------*/
+
+#score {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+#score li {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#score hr {
+  height: 30px;
+  border-color: var(--Neutral400);
+}
+
+.small-text {
+  font-size: 0.7rem;
+  color: var(--Neutral400);
+}
+
+.big-text {
+  font-weight: bolder;
+}
+
+#accuracy-container {
+  color: var(--Red500);
+}
+
+#time-container {
+  color: var(--Yellow400);
+}
+
+/* * ---------------   dificulty  ----------------*/
+
+#dificulty {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+#dificulty select {
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+/* * ---------------   message  ----------------*/
+
+#message {
+  font-size: 1.5rem;
+}
+
 .correct {
-    color: green;
+  color: var(--Green500);
 }
 
 .incorrect {
-    color: red;
-    text-decoration: underline;
+  color: var(--Red500);
+  text-decoration: underline;
 }
 
-.active{
-    animation: blink 1s infinite;
+.active {
+  animation: blink 1s infinite;
 }
-
 
 /* --------- Animação do caractere que está ativo --------- */
 @keyframes blink {
-  0% { background-color: black }
-  100% { background-color: rgba(0, 0, 0, 0) }
+  0% {
+    background-color: var(--Neutral400);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0);
+  }
 }

@@ -1,4 +1,5 @@
 const message = document.querySelector<HTMLParagraphElement>("#message");
+const levelInput = document.querySelector<HTMLSelectElement>("#level");
 const restartBtn = document.querySelector<HTMLButtonElement>(".restart");
 const textInput = document.querySelector<HTMLInputElement>("#textInput");
 const correctCount = document.querySelector<HTMLSpanElement>("#correctCount");
@@ -7,7 +8,7 @@ const timeContainer = document.querySelector<HTMLSpanElement>("#time-container")
 const wpmContainer = document.querySelector<HTMLSpanElement>("#wpm-container");
 const accuracyContainer = document.querySelector<HTMLSpanElement>("#accuracy-container");
 
-if (!message || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer || !restartBtn)
+if (!message || !levelInput || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer || !restartBtn)
   throw new Error("Some element is not linked to the DOM.");
 
 // ! Variáveis
@@ -38,9 +39,9 @@ const reset = () => {
   messageSpans[0].classList.add("active");
   correctCount.innerText = `Number of correct characters: ${correct}`;
   errorCount.innerText = `Number of incorrect characters: ${error} Total number of incorrect characters: ${errorTotal.length}`;
-  timeContainer.innerText = `Tempo: 0:00`;
-  wpmContainer.innerText = `WPM: 0`;
-  accuracyContainer.innerText = `Accuracy: 100%`;
+  timeContainer.innerText = `0:00`;
+  wpmContainer.innerText = `0`;
+  accuracyContainer.innerText = `100%`;
 };
 
 // * Quebrar a mensagem em spans
@@ -78,21 +79,25 @@ type levelsData = {
 // Puxar os dados do data.json pra esse arquivo
 const pullData = async () => {
   const levelArray: ("easy" | "medium" | "hard")[] = ["easy", "medium", "hard"]; // ("easy" | "medium" | "hard") -> os únicos valores aceitos são estes
-  const randomLevel = levelArray[Math.floor(Math.random() * 3)]; // Sortear um dos índices
+  let positionLevel = levelArray[0];
+  if (levelInput.value === "medium") positionLevel = levelArray[1]
+  if (levelInput.value === "hard") positionLevel = levelArray[2]
   try {
     const data = await fetch("data.json");
     if (!data.ok) {
       throw new Error("Ops! Something is wrong!");
     }
     const dataJson = (await data.json()) as levelsData;
-    const chosenLevel = dataJson[randomLevel];
+    const chosenLevel = dataJson[positionLevel];
     const chosenIndex = Math.floor(Math.random() * chosenLevel.length);
     const chosenText = chosenLevel[chosenIndex];
+    console.log(chosenIndex)
     message.textContent = chosenText.text;
     breakMessage();
   } catch (err) {
     console.log(err);
   }
+  textInput.disabled = false;
 };
 
 // A cada letra teclada no input vai rodar isso aqui:
@@ -102,21 +107,19 @@ textInput.addEventListener("input", () => {
     startTime = Date.now();
     started = true;
   }
-  let totalLenght = messageSpans.length;
+  let totalLength = messageSpans.length;
   correct = 0;
   error = 0;
 
-  // Mostra o tempo real
+  // * Mostra o tempo real
   let nowTimeTotalSeconds = Math.floor((Date.now() - startTime) / 1000);
   let nowTimeMinutes = nowTimeTotalSeconds / 60;
   let nowTimeSeconds = nowTimeTotalSeconds % 60;
   let nowTimeSecondsString = `${nowTimeSeconds}`.padStart(2, "0");
   let nowTimeString = `${Math.floor(nowTimeMinutes)}:${nowTimeSecondsString}`;
-  console.log(nowTimeString)
-
   let wpmNow = Math.floor(nowTimeMinutes === 0 ? 0 : textInput.value.length / 5 / nowTimeMinutes);
-  timeContainer.innerText = `Tempo: ${nowTimeString}`;
-  wpmContainer.innerText = `WPM: ${wpmNow}`;
+  timeContainer.innerText = `${nowTimeString}`;
+  wpmContainer.innerText = `${wpmNow}`;
 
   // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
   messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
@@ -136,31 +139,38 @@ textInput.addEventListener("input", () => {
     }
 
     // Atualizar cursor
-    if (i === textInput.value.length - 1 && i !== totalLenght - 1) {
+    if (i === textInput.value.length - 1 && i !== totalLength - 1) {
       messageSpans[i + 1].classList.add("active");
     }
 
     // Accuracy
-    let accuracy = Math.floor(((totalLenght - errorTotal.length) / totalLenght) * 100);
-    accuracyContainer.innerText = `Accuracy: ${accuracy < 0 ? 0 : accuracy}%`;
+    let accuracy = Math.floor(((totalLength - errorTotal.length) / totalLength) * 100);
+    accuracyContainer.innerText = `${accuracy < 0 ? 0 : accuracy}%`;
   }
 
   // Acabou o exercício
-  if (textInput.value.length === totalLenght) {
-    console.log("You have completed the exercise.");
-    textInput.value = "";
-    endTime = Date.now();
-    let elapsedTimeSeconds = Math.floor((endTime - startTime) / 1000);
-    let elapsedTimeMinutes = Math.floor(elapsedTimeSeconds / 60) + (elapsedTimeSeconds % 60) * 0.01;
-    let wpmTotal = elapsedTimeMinutes === 0 ? 0 : totalLenght / 5 / elapsedTimeMinutes;
-
-    timeContainer.innerText = `Final time: ${elapsedTimeMinutes}`;
+  if (textInput.value.length >= totalLength) {
+    finishTest()
   }
 
   //Mostra na tela o que foi feito sempre atualizando os dados
-  correctCount.innerText = `Number of correct characters:: ${correct}`;
-  errorCount.innerText = `Number of incorrect characters:: ${error} Total number of incorrect characters:: ${errorTotal.length}`;
+  correctCount.innerText = `Number of correct characters: ${correct}`;
+  errorCount.innerText = `Number of incorrect characters: ${error} Total number of incorrect characters: ${errorTotal.length}`;
 });
+
+const finishTest = () => {
+  console.log("You have completed the exercise.");
+  endTime = Date.now();
+  let elapsedTimeTotalSeconds = Math.floor((endTime - startTime) / 1000);
+  let elapsedTimeMinutes = elapsedTimeTotalSeconds / 60;
+  let elapsedTimeSeconds = elapsedTimeTotalSeconds % 60;
+  let elapsedTimeSecondsString = `${elapsedTimeSeconds}`.padStart(2, "0");
+  let elapsedTimeString = `${Math.floor(elapsedTimeMinutes)}:${elapsedTimeSecondsString}`;
+  let wpmTotal = Math.floor(elapsedTimeMinutes === 0 ? 0 : textInput.value.length / 5 / elapsedTimeMinutes);
+  timeContainer.innerText = `Final time: ${elapsedTimeString}`;
+  wpmContainer.innerText = `Final WPM: ${wpmTotal}`;
+  textInput.disabled = true;
+};
 
 restartBtn.addEventListener("click", () => pullData());
 
