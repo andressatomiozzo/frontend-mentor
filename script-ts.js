@@ -1,5 +1,7 @@
 "use strict";
 const message = document.querySelector("#message");
+const startContainer = document.querySelector(".start-container");
+const startBtn = document.querySelector(".start");
 const levelInput = document.querySelector("#level");
 const restartBtn = document.querySelector(".restart");
 const textInput = document.querySelector("#textInput");
@@ -8,8 +10,27 @@ const errorCount = document.querySelector("#errorCount");
 const timeContainer = document.querySelector("#time-container");
 const wpmContainer = document.querySelector("#wpm-container");
 const accuracyContainer = document.querySelector("#accuracy-container");
-if (!message || !levelInput || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer || !restartBtn)
+if (!message ||
+    !levelInput ||
+    !textInput ||
+    !correctCount ||
+    !errorCount ||
+    !timeContainer ||
+    !accuracyContainer ||
+    !wpmContainer ||
+    !restartBtn ||
+    !startBtn || !startContainer)
     throw new Error("Some element is not linked to the DOM.");
+// ! Para iniciar o teste
+startBtn.addEventListener("click", () => {
+    startContainer.classList.add("escondido");
+    textInput.focus();
+});
+document.addEventListener("keydown", () => {
+    startContainer.classList.add("escondido");
+    textInput.focus();
+});
+message.addEventListener("click", () => textInput.focus());
 // ! Variáveis
 // * Quebrar a mensagem em spans e depois pegar os spans
 let messageBroaken = [];
@@ -77,7 +98,6 @@ const pullData = async () => {
         const chosenLevel = dataJson[positionLevel];
         const chosenIndex = Math.floor(Math.random() * chosenLevel.length);
         const chosenText = chosenLevel[chosenIndex];
-        console.log(chosenIndex);
         message.textContent = chosenText.text;
         breakMessage();
     }

@@ -1,4 +1,6 @@
 const message = document.querySelector<HTMLParagraphElement>("#message");
+const startContainer = document.querySelector<HTMLDivElement>(".start-container");
+const startBtn = document.querySelector<HTMLButtonElement>(".start");
 const levelInput = document.querySelector<HTMLSelectElement>("#level");
 const restartBtn = document.querySelector<HTMLButtonElement>(".restart");
 const textInput = document.querySelector<HTMLInputElement>("#textInput");
@@ -8,8 +10,30 @@ const timeContainer = document.querySelector<HTMLSpanElement>("#time-container")
 const wpmContainer = document.querySelector<HTMLSpanElement>("#wpm-container");
 const accuracyContainer = document.querySelector<HTMLSpanElement>("#accuracy-container");
 
-if (!message || !levelInput || !textInput || !correctCount || !errorCount || !timeContainer || !accuracyContainer || !wpmContainer || !restartBtn)
+if (
+  !message ||
+  !levelInput ||
+  !textInput ||
+  !correctCount ||
+  !errorCount ||
+  !timeContainer ||
+  !accuracyContainer ||
+  !wpmContainer ||
+  !restartBtn ||
+  !startBtn || !startContainer
+)
   throw new Error("Some element is not linked to the DOM.");
+
+// ! Para iniciar o teste
+startBtn.addEventListener("click", () => {
+  startContainer.classList.add("escondido");
+  textInput.focus();
+});
+document.addEventListener("keydown", () => {
+  startContainer.classList.add("escondido");
+  textInput.focus();
+});
+message.addEventListener("click", () => textInput.focus());
 
 // ! Variáveis
 // * Quebrar a mensagem em spans e depois pegar os spans
@@ -80,8 +104,8 @@ type levelsData = {
 const pullData = async () => {
   const levelArray: ("easy" | "medium" | "hard")[] = ["easy", "medium", "hard"]; // ("easy" | "medium" | "hard") -> os únicos valores aceitos são estes
   let positionLevel = levelArray[0];
-  if (levelInput.value === "medium") positionLevel = levelArray[1]
-  if (levelInput.value === "hard") positionLevel = levelArray[2]
+  if (levelInput.value === "medium") positionLevel = levelArray[1];
+  if (levelInput.value === "hard") positionLevel = levelArray[2];
   try {
     const data = await fetch("data.json");
     if (!data.ok) {
@@ -91,7 +115,6 @@ const pullData = async () => {
     const chosenLevel = dataJson[positionLevel];
     const chosenIndex = Math.floor(Math.random() * chosenLevel.length);
     const chosenText = chosenLevel[chosenIndex];
-    console.log(chosenIndex)
     message.textContent = chosenText.text;
     breakMessage();
   } catch (err) {
@@ -150,7 +173,7 @@ textInput.addEventListener("input", () => {
 
   // Acabou o exercício
   if (textInput.value.length >= totalLength) {
-    finishTest()
+    finishTest();
   }
 
   //Mostra na tela o que foi feito sempre atualizando os dados

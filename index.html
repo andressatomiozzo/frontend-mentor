@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div>
+    <div class="start-container">
+      <button class="start btn">Start typing test</button>
+      <span>Or press the "Enter" key to start typing.</span>
+    </div>
+    <div class="page-content">
       <div>
         <header>
           <img src="assets/images/logo-small.svg" alt="Logo" />
@@ -47,22 +51,25 @@
           </select>
         </div>
       </div>
-      <p id="message">abdc efgh</p>
-      <input type="text" id="textInput" />
-      <button class="restart">Restart test</button>
+      <div class="typing-container">
+        <p id="message"></p>
+        <input type="text" id="textInput" autocomplete="off" />
+      </div>
+
+      <button class="restart btn">Restart test</button>
     </div>
 
     <div>
       <div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
         <span id="correctCount"></span>
         <span id="errorCount"></span>
       </div>
