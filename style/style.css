@@ -112,10 +112,11 @@ header > div > img {
   border-radius: 5px;
 }
 
-/* * ---------------   message  ----------------*/
+/* * ---------------   texto avaliado  ----------------*/
 
 #message {
   font-size: 1.5rem;
+  margin: 20px 0;
 }
 
 .correct {
@@ -131,16 +132,6 @@ header > div > img {
   animation: blink 1s infinite;
 }
 
-/* --------- Animação do caractere que está ativo --------- */
-@keyframes blink {
-  0% {
-    background-color: var(--Neutral400);
-  }
-  100% {
-    background-color: rgba(0, 0, 0, 0);
-  }
-}
-
 .typing-container {
   position: relative;
 }
@@ -152,19 +143,30 @@ header > div > img {
   top: 0;
 }
 
-/* * ---------------------  botões  ------------------- */
+/* --------- Animação do caractere que está ativo --------- */
+@keyframes blink {
+  0% {
+    background-color: var(--Neutral400);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+/* * ---------------------  start page  ------------------- */
 .start-container {
   position: absolute;
   background: hsla(0, 0%, 7%, 0.353);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); /* Desfocando o fundo*/
   width: 100%;
-  height: 100%;
+  height: 80%;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: -20px;
+  margin-left: -20px;
+  margin-top: 5px;
 }
 
 .start-container button {
@@ -175,10 +177,44 @@ header > div > img {
   margin: 20px;
 }
 
+.start-container button:hover {
+  cursor: pointer;
+}
+
 .start-container span {
   background-color: transparent;
 }
 
 .escondido {
   display: none;
+}
+
+.restart {
+  background-color: var(--Neutral800);
+}
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  margin: 20px;
+  display: block;
+  margin: 20px auto;
+}
+
+.btn::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: -2px;
+
+  background-image: url("../assets/images/icon-restart.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.btn:hover {
+  cursor: pointer;
 }

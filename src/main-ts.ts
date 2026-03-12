@@ -107,7 +107,7 @@ const pullData = async () => {
   if (levelInput.value === "medium") positionLevel = levelArray[1];
   if (levelInput.value === "hard") positionLevel = levelArray[2];
   try {
-    const data = await fetch("data.json");
+    const data = await fetch("src/data.json");
     if (!data.ok) {
       throw new Error("Ops! Something is wrong!");
     }
