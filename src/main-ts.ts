@@ -37,7 +37,7 @@ message.addEventListener("click", () => textInput.focus());
 
 // ! Variáveis
 // * Quebrar a mensagem em spans e depois pegar os spans
-let messageBroaken: string[] = [];
+let messageBroken: string[] = [];
 let messageSpans: HTMLSpanElement[] = [];
 
 // * Começar o tempo
@@ -71,13 +71,13 @@ const reset = () => {
 // * Quebrar a mensagem em spans
 const breakMessage = () => {
   //Se não tiver uma mensagem como desafio ele solta um erro
-  if (message.textContent.length === 0) {
+  if (!message.textContent) {
     console.log("ops, não tem messagem");
   } else {
     //Quebra a mensagem em pequenos spans
-    messageBroaken = message.textContent.split("");
+    messageBroken = message.textContent.split("");
     message.innerHTML = "";
-    messageBroaken.forEach((character) => {
+    messageBroken.forEach((character) => {
       const spanCharacter = document.createElement("span");
       spanCharacter.innerText = character;
       spanCharacter.classList.add("message-span");
@@ -152,7 +152,7 @@ textInput.addEventListener("input", () => {
 
   // Pra cada caractere que está e já foi adicionado ele verifica se está correto ou não comparando os spans
   for (let i: number = 0; i < textInput.value.length; i++) {
-    if (textInput.value[i] === messageBroaken[i]) {
+    if (textInput.value[i] === messageBroken[i]) {
       messageSpans[i].classList.add("correct");
       correct++;
     } else {
