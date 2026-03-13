@@ -1,4 +1,3 @@
-"use strict";
 const message = document.querySelector("#message");
 const startContainer = document.querySelector(".start-container");
 const startBtn = document.querySelector(".start");
@@ -19,8 +18,11 @@ if (!message ||
     !accuracyContainer ||
     !wpmContainer ||
     !restartBtn ||
-    !startBtn || !startContainer)
+    !startBtn ||
+    !startContainer)
     throw new Error("Some element is not linked to the DOM.");
+// ! Variáveis para exportar
+export { timeContainer };
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
     startContainer.classList.add("escondido");
@@ -31,20 +33,7 @@ document.addEventListener("keydown", () => {
     textInput.focus();
 });
 message.addEventListener("click", () => textInput.focus());
-// ! Variáveis
-// * Quebrar a mensagem em spans e depois pegar os spans
-let messageBroaken = [];
-let messageSpans = [];
-// * Começar o tempo
-let started = false;
-let startTime = 0;
-let endTime = 0;
-// * Calcular os erros e acertos
-let errorTotal = [];
-let correct = 0;
-let error = 0;
-// !Funções
-// * Resetar os valores iniciais
+// ! Resetar os valores iniciais
 const reset = () => {
     textInput.value = "";
     started = false;
@@ -60,17 +49,21 @@ const reset = () => {
     wpmContainer.innerText = `0`;
     accuracyContainer.innerText = `100%`;
 };
+// ! Quebrar a mensagem e transformar em span
+// * Quebrar a mensagem em spans e depois pegar os spans
+let messageBroken = [];
+let messageSpans = [];
 // * Quebrar a mensagem em spans
 const breakMessage = () => {
     //Se não tiver uma mensagem como desafio ele solta um erro
-    if (message.textContent.length === 0) {
+    if (!message.textContent) {
         console.log("ops, não tem messagem");
     }
     else {
         //Quebra a mensagem em pequenos spans
-        messageBroaken = message.textContent.split("");
+        messageBroken = message.textContent.split("");
         message.innerHTML = "";
-        messageBroaken.forEach((character) => {
+        messageBroken.forEach((character) => {
             const spanCharacter = document.createElement("span");
             spanCharacter.innerText = character;
             spanCharacter.classList.add("message-span");
@@ -81,7 +74,6 @@ const breakMessage = () => {
         reset();
     }
 };
-// Puxar os dados do data.json pra esse arquivo
 const pullData = async () => {
     const levelArray = ["easy", "medium", "hard"]; // ("easy" | "medium" | "hard") -> os únicos valores aceitos são estes
     let positionLevel = levelArray[0];
@@ -106,11 +98,34 @@ const pullData = async () => {
     }
     textInput.disabled = false;
 };
-// A cada letra teclada no input vai rodar isso aqui:
+// ! Váriáveis do tempo, acertos e erros, além do fim do teste
+// * Começar o tempo
+let started = false;
+let startTime = 0;
+let endTime = 0;
+// * Calcular os erros e acertos
+let errorTotal = [];
+let correct = 0;
+let error = 0;
+import { startTimer60 } from "./timer.js";
+const finishTest = () => {
+    console.log("You have completed the exercise.");
+    endTime = Date.now();
+    let elapsedTimeTotalSeconds = Math.floor((endTime - startTime) / 1000);
+    let elapsedTimeMinutes = elapsedTimeTotalSeconds / 60;
+    let elapsedTimeSeconds = elapsedTimeTotalSeconds % 60;
+    let elapsedTimeSecondsString = `${elapsedTimeSeconds}`.padStart(2, "0");
+    let elapsedTimeString = `${Math.floor(elapsedTimeMinutes)}:${elapsedTimeSecondsString}`;
+    let wpmTotal = Math.floor(elapsedTimeMinutes === 0 ? 0 : textInput.value.length / 5 / elapsedTimeMinutes);
+    timeContainer.innerText = `Final time: ${elapsedTimeString}`;
+    wpmContainer.innerText = `Final WPM: ${wpmTotal}`;
+    textInput.disabled = true;
+};
+// ! A cada letra teclada no input vai rodar isso aqui:
 textInput.addEventListener("input", () => {
     if (started === false) {
         // Na primeira letra digitada cai aqui e marca o tempo de início
-        startTime = Date.now();
+        startTimer60();
         started = true;
     }
     let totalLength = messageSpans.length;
@@ -123,7 +138,7 @@ textInput.addEventListener("input", () => {
     let nowTimeSecondsString = `${nowTimeSeconds}`.padStart(2, "0");
     let nowTimeString = `${Math.floor(nowTimeMinutes)}:${nowTimeSecondsString}`;
     let wpmNow = Math.floor(nowTimeMinutes === 0 ? 0 : textInput.value.length / 5 / nowTimeMinutes);
-    timeContainer.innerText = `${nowTimeString}`;
+    // timeContainer.innerText = `${nowTimeString}`;
     wpmContainer.innerText = `${wpmNow}`;
     // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
     messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
@@ -132,7 +147,7 @@ textInput.addEventListener("input", () => {
     }
     // Pra cada caractere que está e já foi adicionado ele verifica se está correto ou não comparando os spans
     for (let i = 0; i < textInput.value.length; i++) {
-        if (textInput.value[i] === messageBroaken[i]) {
+        if (textInput.value[i] === messageBroken[i]) {
             messageSpans[i].classList.add("correct");
             correct++;
         }
@@ -158,18 +173,5 @@ textInput.addEventListener("input", () => {
     correctCount.innerText = `Number of correct characters: ${correct}`;
     errorCount.innerText = `Number of incorrect characters: ${error} Total number of incorrect characters: ${errorTotal.length}`;
 });
-const finishTest = () => {
-    console.log("You have completed the exercise.");
-    endTime = Date.now();
-    let elapsedTimeTotalSeconds = Math.floor((endTime - startTime) / 1000);
-    let elapsedTimeMinutes = elapsedTimeTotalSeconds / 60;
-    let elapsedTimeSeconds = elapsedTimeTotalSeconds % 60;
-    let elapsedTimeSecondsString = `${elapsedTimeSeconds}`.padStart(2, "0");
-    let elapsedTimeString = `${Math.floor(elapsedTimeMinutes)}:${elapsedTimeSecondsString}`;
-    let wpmTotal = Math.floor(elapsedTimeMinutes === 0 ? 0 : textInput.value.length / 5 / elapsedTimeMinutes);
-    timeContainer.innerText = `Final time: ${elapsedTimeString}`;
-    wpmContainer.innerText = `Final WPM: ${wpmTotal}`;
-    textInput.disabled = true;
-};
 restartBtn.addEventListener("click", () => pullData());
 pullData();

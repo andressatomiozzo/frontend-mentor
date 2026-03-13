@@ -20,9 +20,13 @@ if (
   !accuracyContainer ||
   !wpmContainer ||
   !restartBtn ||
-  !startBtn || !startContainer
+  !startBtn ||
+  !startContainer
 )
   throw new Error("Some element is not linked to the DOM.");
+
+// ! Variáveis para exportar
+export { timeContainer };
 
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
@@ -35,23 +39,7 @@ document.addEventListener("keydown", () => {
 });
 message.addEventListener("click", () => textInput.focus());
 
-// ! Variáveis
-// * Quebrar a mensagem em spans e depois pegar os spans
-let messageBroken: string[] = [];
-let messageSpans: HTMLSpanElement[] = [];
-
-// * Começar o tempo
-let started = false;
-let startTime = 0;
-let endTime = 0;
-
-// * Calcular os erros e acertos
-let errorTotal: number[] = [];
-let correct = 0;
-let error = 0;
-
-// !Funções
-// * Resetar os valores iniciais
+// ! Resetar os valores iniciais
 const reset = () => {
   textInput.value = "";
   started = false;
@@ -67,6 +55,11 @@ const reset = () => {
   wpmContainer.innerText = `0`;
   accuracyContainer.innerText = `100%`;
 };
+
+// ! Quebrar a mensagem e transformar em span
+// * Quebrar a mensagem em spans e depois pegar os spans
+let messageBroken: string[] = [];
+let messageSpans: HTMLSpanElement[] = [];
 
 // * Quebrar a mensagem em spans
 const breakMessage = () => {
@@ -89,7 +82,8 @@ const breakMessage = () => {
   }
 };
 
-// ! Deixar claro qual o tipo de dado que o data.json vai retornar
+// ! Puxar os dados do data.json pra esse arquivo
+// Deixar claro qual o tipo de dado que o data.json vai retornar
 type levels = {
   id: string;
   text: string;
@@ -100,7 +94,6 @@ type levelsData = {
   hard: levels[];
 };
 
-// Puxar os dados do data.json pra esse arquivo
 const pullData = async () => {
   const levelArray: ("easy" | "medium" | "hard")[] = ["easy", "medium", "hard"]; // ("easy" | "medium" | "hard") -> os únicos valores aceitos são estes
   let positionLevel = levelArray[0];
@@ -123,13 +116,42 @@ const pullData = async () => {
   textInput.disabled = false;
 };
 
-// A cada letra teclada no input vai rodar isso aqui:
+// ! Váriáveis do tempo, acertos e erros, além do fim do teste
+// * Começar o tempo
+let started = false;
+let startTime = 0;
+let endTime = 0;
+
+// * Calcular os erros e acertos
+let errorTotal: number[] = [];
+let correct = 0;
+let error = 0;
+
+import { startTimerFree, startTimer60, stopTimer } from "./timer.js";
+
+const finishTest = () => {
+  console.log("You have completed the exercise.");
+  endTime = Date.now();
+  let elapsedTimeTotalSeconds = Math.floor((endTime - startTime) / 1000);
+  let elapsedTimeMinutes = elapsedTimeTotalSeconds / 60;
+  let elapsedTimeSeconds = elapsedTimeTotalSeconds % 60;
+  let elapsedTimeSecondsString = `${elapsedTimeSeconds}`.padStart(2, "0");
+  let elapsedTimeString = `${Math.floor(elapsedTimeMinutes)}:${elapsedTimeSecondsString}`;
+  let wpmTotal = Math.floor(elapsedTimeMinutes === 0 ? 0 : textInput.value.length / 5 / elapsedTimeMinutes);
+  timeContainer.innerText = `Final time: ${elapsedTimeString}`;
+  wpmContainer.innerText = `Final WPM: ${wpmTotal}`;
+  textInput.disabled = true;
+};
+
+
+// ! A cada letra teclada no input vai rodar isso aqui:
 textInput.addEventListener("input", () => {
   if (started === false) {
     // Na primeira letra digitada cai aqui e marca o tempo de início
-    startTime = Date.now();
+    startTimer60();
     started = true;
   }
+
   let totalLength = messageSpans.length;
   correct = 0;
   error = 0;
@@ -141,7 +163,7 @@ textInput.addEventListener("input", () => {
   let nowTimeSecondsString = `${nowTimeSeconds}`.padStart(2, "0");
   let nowTimeString = `${Math.floor(nowTimeMinutes)}:${nowTimeSecondsString}`;
   let wpmNow = Math.floor(nowTimeMinutes === 0 ? 0 : textInput.value.length / 5 / nowTimeMinutes);
-  timeContainer.innerText = `${nowTimeString}`;
+  // timeContainer.innerText = `${nowTimeString}`;
   wpmContainer.innerText = `${wpmNow}`;
 
   // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
@@ -180,20 +202,6 @@ textInput.addEventListener("input", () => {
   correctCount.innerText = `Number of correct characters: ${correct}`;
   errorCount.innerText = `Number of incorrect characters: ${error} Total number of incorrect characters: ${errorTotal.length}`;
 });
-
-const finishTest = () => {
-  console.log("You have completed the exercise.");
-  endTime = Date.now();
-  let elapsedTimeTotalSeconds = Math.floor((endTime - startTime) / 1000);
-  let elapsedTimeMinutes = elapsedTimeTotalSeconds / 60;
-  let elapsedTimeSeconds = elapsedTimeTotalSeconds % 60;
-  let elapsedTimeSecondsString = `${elapsedTimeSeconds}`.padStart(2, "0");
-  let elapsedTimeString = `${Math.floor(elapsedTimeMinutes)}:${elapsedTimeSecondsString}`;
-  let wpmTotal = Math.floor(elapsedTimeMinutes === 0 ? 0 : textInput.value.length / 5 / elapsedTimeMinutes);
-  timeContainer.innerText = `Final time: ${elapsedTimeString}`;
-  wpmContainer.innerText = `Final WPM: ${wpmTotal}`;
-  textInput.disabled = true;
-};
 
 restartBtn.addEventListener("click", () => pullData());
 
