@@ -2,6 +2,7 @@ const message = document.querySelector("#message");
 const startContainer = document.querySelector(".start-container");
 const startBtn = document.querySelector(".start");
 const levelInput = document.querySelector("#level");
+const timeSelect = document.querySelector("#time");
 const restartBtn = document.querySelector(".restart");
 const textInput = document.querySelector("#textInput");
 const correctCount = document.querySelector("#correctCount");
@@ -11,6 +12,7 @@ const wpmContainer = document.querySelector("#wpm-container");
 const accuracyContainer = document.querySelector("#accuracy-container");
 if (!message ||
     !levelInput ||
+    !timeSelect ||
     !textInput ||
     !correctCount ||
     !errorCount ||
@@ -22,7 +24,7 @@ if (!message ||
     !startContainer)
     throw new Error("Some element is not linked to the DOM.");
 // ! Variáveis para exportar
-export { timeContainer };
+export { textInput, timeContainer };
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
     startContainer.classList.add("escondido");
@@ -48,6 +50,7 @@ const reset = () => {
     timeContainer.innerText = `0:00`;
     wpmContainer.innerText = `0`;
     accuracyContainer.innerText = `100%`;
+    stopTimer();
 };
 // ! Quebrar a mensagem e transformar em span
 // * Quebrar a mensagem em spans e depois pegar os spans
@@ -107,39 +110,31 @@ let endTime = 0;
 let errorTotal = [];
 let correct = 0;
 let error = 0;
-import { startTimer60 } from "./timer.js";
+import { startTimerFree, startTimer60, stopTimer, wpmCounter, finalTimer } from "./timer.js";
 const finishTest = () => {
     console.log("You have completed the exercise.");
-    endTime = Date.now();
-    let elapsedTimeTotalSeconds = Math.floor((endTime - startTime) / 1000);
-    let elapsedTimeMinutes = elapsedTimeTotalSeconds / 60;
-    let elapsedTimeSeconds = elapsedTimeTotalSeconds % 60;
-    let elapsedTimeSecondsString = `${elapsedTimeSeconds}`.padStart(2, "0");
-    let elapsedTimeString = `${Math.floor(elapsedTimeMinutes)}:${elapsedTimeSecondsString}`;
-    let wpmTotal = Math.floor(elapsedTimeMinutes === 0 ? 0 : textInput.value.length / 5 / elapsedTimeMinutes);
-    timeContainer.innerText = `Final time: ${elapsedTimeString}`;
-    wpmContainer.innerText = `Final WPM: ${wpmTotal}`;
+    timeContainer.innerText = `Final time: ${finalTimer(startTime)}`;
+    wpmContainer.innerText = `Final WPM: ${wpmCounter(startTime)}`;
     textInput.disabled = true;
 };
 // ! A cada letra teclada no input vai rodar isso aqui:
 textInput.addEventListener("input", () => {
     if (started === false) {
+        startTime = Date.now();
         // Na primeira letra digitada cai aqui e marca o tempo de início
-        startTimer60();
+        if (timeSelect.value === "true") {
+            startTimer60(startTime);
+        }
+        else {
+            startTimerFree(startTime);
+        }
         started = true;
     }
     let totalLength = messageSpans.length;
     correct = 0;
     error = 0;
-    // * Mostra o tempo real
-    let nowTimeTotalSeconds = Math.floor((Date.now() - startTime) / 1000);
-    let nowTimeMinutes = nowTimeTotalSeconds / 60;
-    let nowTimeSeconds = nowTimeTotalSeconds % 60;
-    let nowTimeSecondsString = `${nowTimeSeconds}`.padStart(2, "0");
-    let nowTimeString = `${Math.floor(nowTimeMinutes)}:${nowTimeSecondsString}`;
-    let wpmNow = Math.floor(nowTimeMinutes === 0 ? 0 : textInput.value.length / 5 / nowTimeMinutes);
-    // timeContainer.innerText = `${nowTimeString}`;
-    wpmContainer.innerText = `${wpmNow}`;
+    // * Mostra o WPM ao vivo
+    wpmContainer.innerText = `${wpmCounter(startTime)}`;
     // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
     messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
     if (textInput.value.length === 0) {

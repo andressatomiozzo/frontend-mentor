@@ -156,17 +156,17 @@ header > div > img {
 /* * ---------------------  start page  ------------------- */
 .start-container {
   position: absolute;
-  background: hsla(0, 0%, 7%, 0.353);
-  backdrop-filter: blur(10px); /* Desfocando o fundo*/
   width: 100%;
   height: 80%;
-  z-index: 1;
+  margin-left: -20px;
+  margin-top: 5px;
+  background: hsla(0, 0%, 7%, 0.353);
+  backdrop-filter: blur(10px); /* Desfocando o fundo*/
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: -20px;
-  margin-top: 5px;
+  z-index: 1;
 }
 
 .start-container button {
