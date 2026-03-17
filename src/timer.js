@@ -28,6 +28,7 @@ export const startTimerFree = (startTime) => {
     timerInterval = setInterval(() => {
         updateTimer(startTime);
         timeContainer.textContent = formattedTime;
+        timeContainer.classList.add("time-container-active");
     }, 1000);
 };
 export const startTimer60 = (startTime) => {
@@ -38,6 +39,11 @@ export const startTimer60 = (startTime) => {
         const seconds = remainingTime % 60;
         formattedTime = `${minutes}:${String(seconds).padStart(2, "0")}`;
         timeContainer.textContent = formattedTime;
+        timeContainer.classList.add("time-container-active");
+        if (remainingTime === 15) {
+            timeContainer.classList.remove("time-container-active");
+            timeContainer.classList.add("time-container-active2");
+        }
         if (remainingTime === 0) {
             stopTimer();
             console.log("o tempo acabou");

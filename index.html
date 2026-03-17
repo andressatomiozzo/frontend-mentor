@@ -8,30 +8,30 @@
     <link rel="stylesheet" href="style/style.css" />
   </head>
   <body>
+    <h1 class="hidden">Typing Speed Test</h1>
+    <header>
+      <img src="assets/images/logo-small.svg" alt="Logo" />
+      <div id="best-wpm">
+        <img src="assets/images/icon-personal-best.svg" alt="Trophy" />
+        <span>Best: 92wpm</span>
+      </div>
+    </header>
     <div class="page-content">
       <div>
-        <header>
-          <img src="assets/images/logo-small.svg" alt="Logo" />
-          <div id="best-wpm">
-            <img src="assets/images/icon-personal-best.svg" alt="Trophy" />
-            <span>Best: 92wpm</span>
-          </div>
-        </header>
-
         <ul id="score">
           <li>
             <span class="small-text">WPM:</span>
-            <span class="big-text" id="wpm-container"></span>
+            <span class="big-text wpm-container"></span>
           </li>
           <hr />
           <li>
             <span class="small-text">Accuracy:</span>
-            <span class="big-text" id="accuracy-container"></span>
+            <span class="big-text accuracy-container"></span>
           </li>
           <hr />
           <li>
             <span class="small-text">Time:</span>
-            <span class="big-text" id="time-container"></span>
+            <span class="big-text time-container"></span>
           </li>
         </ul>
 
@@ -58,6 +58,24 @@
 
       <button class="restart btn">Restart test</button>
     </div>
+    <div id="baseline-container">
+      <div class="result-img"></div>
+      <h2>Baseline Established!</h2>
+      <p>You've set the bar. Now the real challenge begins - time to beat it.</p>
+      <ul>
+        <span class="small-text">WPM:</span>
+        <span class="big-text wpm-container"></span>
+      </ul>
+      <li>
+        <span class="small-text">Accuracy:</span>
+        <span class="big-text accuracy-container"></span>
+      </li>
+      <li>
+        <span class="small-text">Characters:</span>
+        <span class="big-text correctCharacters-container"></span>
+        <span class="big-text wrongCharacters-container"></span>
+      </li>
+    </div>
 
     <div>
       <div>
@@ -72,11 +90,6 @@
         <br />
         <span id="correctCount"></span>
         <span id="errorCount"></span>
-      </div>
-      <div>
-        <span id="time-container"></span>
-        <span id="wpm-container"></span>
-        <span id="accuracy-container">Accuracy: 100%</span>
       </div>
     </div>
 

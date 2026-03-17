@@ -7,9 +7,9 @@ const restartBtn = document.querySelector<HTMLButtonElement>(".restart");
 const textInput = document.querySelector<HTMLInputElement>("#textInput");
 const correctCount = document.querySelector<HTMLSpanElement>("#correctCount");
 const errorCount = document.querySelector<HTMLSpanElement>("#errorCount");
-const timeContainer = document.querySelector<HTMLSpanElement>("#time-container");
-const wpmContainer = document.querySelector<HTMLSpanElement>("#wpm-container");
-const accuracyContainer = document.querySelector<HTMLSpanElement>("#accuracy-container");
+const timeContainer = document.querySelector<HTMLSpanElement>(".time-container");
+const wpmContainer = document.querySelector<HTMLSpanElement>(".wpm-container");
+const accuracyContainer = document.querySelector<HTMLSpanElement>(".accuracy-container");
 
 if (
   !message ||
@@ -32,11 +32,11 @@ export { textInput, timeContainer };
 
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
-  startContainer.classList.add("escondido");
+  startContainer.classList.add("hidden");
   textInput.focus();
 });
 document.addEventListener("keydown", () => {
-  startContainer.classList.add("escondido");
+  startContainer.classList.add("hidden");
   textInput.focus();
 });
 message.addEventListener("click", () => textInput.focus());
