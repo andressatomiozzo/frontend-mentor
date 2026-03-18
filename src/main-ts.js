@@ -6,11 +6,9 @@ const timeSelect = document.querySelector("#time");
 const restartBtn = document.querySelector(".restart");
 const textInput = document.querySelector("#textInput");
 const timeContainer = document.querySelector(".time-container");
-const wpmContainer = document.querySelectorAll(".wpm-container");
-const accuracyContainer = document.querySelectorAll(".accuracy-container");
-const correctCharactersContainer = document.querySelector(".correctCharacters-container");
-const incorrectCharactersContainer = document.querySelector(".incorrectCharacters-container");
-const baselineContainer = document.querySelector("#baseline-container");
+const wpmContainer = document.querySelector(".wpm-container");
+const accuracyContainer = document.querySelector(".accuracy-container");
+const resultsContainer = document.querySelectorAll(".results");
 if (!message ||
     !levelInput ||
     !timeSelect ||
@@ -21,12 +19,12 @@ if (!message ||
     !restartBtn ||
     !startBtn ||
     !startContainer ||
-    !correctCharactersContainer ||
-    !incorrectCharactersContainer ||
-    !baselineContainer)
+    !resultsContainer)
     throw new Error("Some element is not linked to the DOM.");
 // ! Variáveis para exportar
-export { textInput, timeContainer };
+export { textInput, timeContainer, resultsContainer, correct, error, accuracy };
+import { startTimerFree, startTimer60, stopTimer, wpmCounter } from "./timer.js";
+import { finishTest } from "./finish-test.js";
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
     startContainer.classList.add("hidden");
@@ -48,8 +46,8 @@ const reset = () => {
     error = 0;
     messageSpans[0].classList.add("active");
     timeContainer.innerText = `0:00`;
-    wpmContainer.forEach((e) => (e.innerText = `0`));
-    accuracyContainer.forEach((e) => (e.innerText = `100%`));
+    wpmContainer.innerText = `0`;
+    accuracyContainer.innerText = `100%`;
     stopTimer();
 };
 // ! Quebrar a mensagem e transformar em span
@@ -111,25 +109,23 @@ let errorTotal = [];
 let correct = 0;
 let error = 0;
 let accuracy = 100;
-import { startTimerFree, startTimer60, stopTimer, wpmCounter } from "./timer.js";
-const finishBaseline = () => {
-    baselineContainer.classList.remove("hidden");
-    if (accuracy >= 95) {
-        accuracyContainer[1].classList.add("correct");
-    }
-    else {
-        accuracyContainer[1].classList.add("incorrect");
-    }
-    correctCharactersContainer.classList.add("correct");
-    incorrectCharactersContainer.classList.add("incorrect");
-};
-const finishTest = () => {
-    console.log("You have completed the exercise.");
-    correctCharactersContainer.innerText = `${correct}`;
-    incorrectCharactersContainer.innerText = `${error}`;
-    textInput.disabled = true;
-    finishBaseline();
-};
+// const finishBaseline = () => {
+//   baselineContainer.classList.remove("hidden");
+//   if (accuracy >= 95) {
+//     accuracyContainer[1].classList.add("correct");
+//   } else {
+//     accuracyContainer[1].classList.add("incorrect");
+//   }
+//   correctCharactersContainer.classList.add("correct");
+//   incorrectCharactersContainer.classList.add("incorrect");
+// };
+// const finishTest = () => {
+//   console.log("You have completed the exercise.");
+//   correctCharactersContainer.innerText = `${correct}`;
+//   incorrectCharactersContainer.innerText = `${error}`;
+//   textInput.disabled = true;
+//   finishBaseline();
+// };
 // ! A cada letra teclada no input vai rodar isso aqui:
 textInput.addEventListener("input", () => {
     if (started === false) {
@@ -147,7 +143,7 @@ textInput.addEventListener("input", () => {
     correct = 0;
     error = 0;
     // * Mostra o WPM ao vivo
-    wpmContainer.forEach((e) => (e.innerText = `${wpmCounter(startTime)}`));
+    wpmContainer.innerText = `${wpmCounter(startTime)}`;
     // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
     messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
     if (textInput.value.length === 0) {
@@ -171,7 +167,7 @@ textInput.addEventListener("input", () => {
         }
         // Accuracy
         accuracy = Math.floor(((totalLength - errorTotal.length) / totalLength) * 100);
-        accuracyContainer.forEach((e) => (e.innerText = `${accuracy < 0 ? 0 : accuracy}%`));
+        accuracyContainer.innerText = `${accuracy < 0 ? 0 : accuracy}%`;
     }
     // Acabou o exercício
     if (textInput.value.length >= totalLength) {

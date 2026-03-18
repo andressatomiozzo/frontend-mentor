@@ -6,11 +6,11 @@ const timeSelect = document.querySelector<HTMLSelectElement>("#time");
 const restartBtn = document.querySelector<HTMLButtonElement>(".restart");
 const textInput = document.querySelector<HTMLInputElement>("#textInput");
 const timeContainer = document.querySelector<HTMLSpanElement>(".time-container");
-const wpmContainer = document.querySelectorAll<HTMLSpanElement>(".wpm-container");
-const accuracyContainer = document.querySelectorAll<HTMLSpanElement>(".accuracy-container");
-const correctCharactersContainer = document.querySelector<HTMLSpanElement>(".correctCharacters-container");
-const incorrectCharactersContainer = document.querySelector<HTMLSpanElement>(".incorrectCharacters-container");
-const baselineContainer = document.querySelector<HTMLDivElement>("#baseline-container");
+
+const wpmContainer = document.querySelector<HTMLSpanElement>(".wpm-container");
+const accuracyContainer = document.querySelector<HTMLSpanElement>(".accuracy-container");
+
+const resultsContainer = document.querySelectorAll<HTMLDivElement>(".results");
 
 if (
   !message ||
@@ -23,14 +23,15 @@ if (
   !restartBtn ||
   !startBtn ||
   !startContainer ||
-  !correctCharactersContainer ||
-  !incorrectCharactersContainer ||
-  !baselineContainer
+  !resultsContainer
 )
   throw new Error("Some element is not linked to the DOM.");
 
 // ! Variáveis para exportar
-export { textInput, timeContainer };
+export { textInput, timeContainer, resultsContainer, correct, error, accuracy };
+
+import { startTimerFree, startTimer60, stopTimer, wpmCounter, finalTimer } from "./timer.js";
+import { finishTest } from "./finish-test.js";
 
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
@@ -54,8 +55,8 @@ const reset = () => {
   error = 0;
   messageSpans[0].classList.add("active");
   timeContainer.innerText = `0:00`;
-  wpmContainer.forEach((e) => (e.innerText = `0`));
-  accuracyContainer.forEach((e) => (e.innerText = `100%`));
+  wpmContainer.innerText = `0`;
+  accuracyContainer.innerText = `100%`;
   stopTimer();
 };
 
@@ -131,26 +132,24 @@ let correct = 0;
 let error = 0;
 let accuracy = 100;
 
-import { startTimerFree, startTimer60, stopTimer, wpmCounter, finalTimer } from "./timer.js";
+// const finishBaseline = () => {
+//   baselineContainer.classList.remove("hidden");
+//   if (accuracy >= 95) {
+//     accuracyContainer[1].classList.add("correct");
+//   } else {
+//     accuracyContainer[1].classList.add("incorrect");
+//   }
+//   correctCharactersContainer.classList.add("correct");
+//   incorrectCharactersContainer.classList.add("incorrect");
+// };
 
-const finishBaseline = () => {
-  baselineContainer.classList.remove("hidden");
-  if (accuracy >= 95) {
-    accuracyContainer[1].classList.add("correct");
-  } else {
-    accuracyContainer[1].classList.add("incorrect");
-  }
-  correctCharactersContainer.classList.add("correct");
-  incorrectCharactersContainer.classList.add("incorrect");
-};
-
-const finishTest = () => {
-  console.log("You have completed the exercise.");
-  correctCharactersContainer.innerText = `${correct}`;
-  incorrectCharactersContainer.innerText = `${error}`;
-  textInput.disabled = true;
-  finishBaseline();
-};
+// const finishTest = () => {
+//   console.log("You have completed the exercise.");
+//   correctCharactersContainer.innerText = `${correct}`;
+//   incorrectCharactersContainer.innerText = `${error}`;
+//   textInput.disabled = true;
+//   finishBaseline();
+// };
 
 // ! A cada letra teclada no input vai rodar isso aqui:
 textInput.addEventListener("input", () => {
@@ -170,7 +169,7 @@ textInput.addEventListener("input", () => {
   error = 0;
 
   // * Mostra o WPM ao vivo
-  wpmContainer.forEach((e) => (e.innerText = `${wpmCounter(startTime)}`));
+  wpmContainer.innerText = `${wpmCounter(startTime)}`;
 
   // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
   messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
@@ -196,7 +195,7 @@ textInput.addEventListener("input", () => {
 
     // Accuracy
     accuracy = Math.floor(((totalLength - errorTotal.length) / totalLength) * 100);
-    accuracyContainer.forEach((e) => (e.innerText = `${accuracy < 0 ? 0 : accuracy}%`));
+    accuracyContainer.innerText = `${accuracy < 0 ? 0 : accuracy}%`;
   }
 
   // Acabou o exercício
