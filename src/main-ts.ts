@@ -6,11 +6,14 @@ const timeSelect = document.querySelector<HTMLSelectElement>("#time");
 const restartBtn = document.querySelector<HTMLButtonElement>(".restart");
 const textInput = document.querySelector<HTMLInputElement>("#textInput");
 const timeContainer = document.querySelector<HTMLSpanElement>(".time-container");
-
 const wpmContainer = document.querySelector<HTMLSpanElement>(".wpm-container");
 const accuracyContainer = document.querySelector<HTMLSpanElement>(".accuracy-container");
-
 const resultsContainer = document.querySelectorAll<HTMLDivElement>(".results");
+const bestWpmResult = document.querySelector<HTMLSpanElement>("#best-wpm-result");
+
+const baselineContainer = document.querySelector<HTMLDivElement>("#baseline-container");
+const highScoreSmashed = document.querySelector<HTMLDivElement>("#high-score-smashed");
+const testComplete = document.querySelector<HTMLDivElement>("#test-complete");
 
 if (
   !message ||
@@ -23,12 +26,16 @@ if (
   !restartBtn ||
   !startBtn ||
   !startContainer ||
-  !resultsContainer
+  !resultsContainer ||
+  !bestWpmResult ||
+  !baselineContainer ||
+  !highScoreSmashed || 
+  !testComplete
 )
   throw new Error("Some element is not linked to the DOM.");
 
 // ! Variáveis para exportar
-export { textInput, timeContainer, resultsContainer, correct, error, accuracy };
+export { textInput, timeContainer, resultsContainer, correct, error, accuracy, wpmNow, pullData, bestWpmResult, baselineContainer, highScoreSmashed, testComplete };
 
 import { startTimerFree, startTimer60, stopTimer, wpmCounter, finalTimer } from "./timer.js";
 import { finishTest } from "./finish-test.js";
@@ -36,13 +43,23 @@ import { finishTest } from "./finish-test.js";
 // ! Para iniciar o teste
 startBtn.addEventListener("click", () => {
   startContainer.classList.add("hidden");
-  textInput.focus();
+  pullData();
 });
-document.addEventListener("keydown", () => {
+startContainer.addEventListener("keydown", () => {
   startContainer.classList.add("hidden");
-  textInput.focus();
+  pullData();
 });
 message.addEventListener("click", () => textInput.focus());
+
+// ! Adicionar ou remover classe active caso o textInput estiver ou não focado
+textInput.addEventListener("focus", () => {
+  messageSpans[textInput.value.length].classList.add("active");
+});
+textInput.addEventListener("blur", () => {
+  if (textInput.disabled === false) {
+    messageSpans[textInput.value.length].classList.remove("active");
+  }
+});
 
 // ! Resetar os valores iniciais
 const reset = () => {
@@ -53,12 +70,14 @@ const reset = () => {
   errorTotal = [];
   correct = 0;
   error = 0;
-  messageSpans[0].classList.add("active");
   timeContainer.innerText = `0:00`;
   wpmContainer.innerText = `0`;
   accuracyContainer.innerText = `100%`;
   stopTimer();
+  textInput.focus();
+  messageSpans[0].classList.add("active");
 };
+let wpmNow = 0;
 
 // ! Quebrar a mensagem e transformar em span
 // * Quebrar a mensagem em spans e depois pegar os spans
@@ -170,6 +189,7 @@ textInput.addEventListener("input", () => {
 
   // * Mostra o WPM ao vivo
   wpmContainer.innerText = `${wpmCounter(startTime)}`;
+  wpmNow = wpmCounter(startTime);
 
   // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
   messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
@@ -205,5 +225,3 @@ textInput.addEventListener("input", () => {
 });
 
 restartBtn.addEventListener("click", () => pullData());
-
-pullData();

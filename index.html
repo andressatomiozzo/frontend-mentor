@@ -13,7 +13,8 @@
       <img src="assets/images/logo-small.svg" alt="Logo" />
       <div id="best-wpm">
         <img src="assets/images/icon-personal-best.svg" alt="Trophy" />
-        <span>Best: 92wpm</span>
+        <span class="small-text">Best: </span>
+        <span id="best-wpm-result"></span>
       </div>
     </header>
     <div class="page-content">
@@ -84,10 +85,10 @@
       <button class="goAgain-btn btn">Beat this score</button>
     </div>
 
-    <div class="results hidden">
+    <div class="results hidden" id="test-complete">
       <div class="result-img"></div>
-      <h2>Baseline Established!</h2>
-      <p>You've set the bar. Now the real challenge begins - time to beat it.</p>
+      <h2>Test Complete!</h2>
+      <p>Solid run. Keep pushing to beat your high score.</p>
       <ul>
         <li>
           <span class="label">WPM:</span>
@@ -106,7 +107,32 @@
           </div>
         </li>
       </ul>
-      <button class="goAgain-btn btn">Beat this score</button>
+      <button class="goAgain-btn btn">Go Again</button>
+    </div>
+
+        <div class="results hidden" id="high-score-smashed">
+      <div class="result-img"></div>
+      <h2>High Score Smashed!</h2>
+      <p>You are getting faster. That was incredible typing.</p>
+      <ul>
+        <li>
+          <span class="label">WPM:</span>
+          <span class="big-text wpm-container"></span>
+        </li>
+        <li>
+          <span class="label">Accuracy:</span>
+          <span class="big-text accuracy-container"></span>
+        </li>
+        <li>
+          <span class="label">Characters:</span>
+          <div>
+            <span class="big-text correctCharacters-container"></span>
+            <span class="big-text">/</span>
+            <span class="big-text incorrectCharacters-container"></span>
+          </div>
+        </li>
+      </ul>
+      <button class="goAgain-btn btn">Go Again</button>
     </div>
 
     <footer>

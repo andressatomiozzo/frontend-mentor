@@ -1,5 +1,10 @@
-import { resultsContainer, textInput, correct, error, accuracy } from "./main-ts.js";
-const finishBaseline = (accuracyContainer, correctCharactersContainer, incorrectCharactersContainer) => {
+import { resultsContainer, textInput, correct, error, accuracy, wpmNow, bestWpmResult, pullData, baselineContainer, highScoreSmashed, testComplete, } from "./main-ts.js";
+let bestWPM = null;
+const showResults = (wpmContainer, accuracyContainer, correctCharactersContainer, incorrectCharactersContainer) => {
+    wpmContainer.innerText = `${wpmNow}`;
+    accuracyContainer.innerText = `${accuracy < 0 ? 0 : accuracy}%`;
+    correctCharactersContainer.innerText = `${correct}`;
+    incorrectCharactersContainer.innerText = `${error}`;
     if (accuracy >= 95) {
         accuracyContainer.classList.add("correct");
     }
@@ -9,21 +14,47 @@ const finishBaseline = (accuracyContainer, correctCharactersContainer, incorrect
     correctCharactersContainer.classList.add("correct");
     incorrectCharactersContainer.classList.add("incorrect");
 };
-// baselineContainer.classList.remove("hidden");
-// const baselineContainer = root.querySelector<HTMLDivElement>("#baseline-container");
 export const finishTest = () => {
     console.log("You have completed the exercise.");
     textInput.disabled = true;
-    resultsContainer.forEach((root) => {
-        const wpmContainer = document.querySelector(".wpm-container");
-        const accuracyContainer = document.querySelector(".accuracy-container");
+    resultsContainer.forEach((root, i) => {
+        const wpmContainer = root.querySelector(".wpm-container");
+        const accuracyContainer = root.querySelector(".accuracy-container");
         const correctCharactersContainer = root.querySelector(".correctCharacters-container");
         const incorrectCharactersContainer = root.querySelector(".incorrectCharacters-container");
         const goAgainBtn = root.querySelector(".goAgain-btn");
         if (!wpmContainer || !accuracyContainer || !correctCharactersContainer || !incorrectCharactersContainer || !goAgainBtn)
             throw new Error("Some element is not linked to the DOM - results.");
-        correctCharactersContainer.innerText = `${correct}`;
-        incorrectCharactersContainer.innerText = `${error}`;
-        finishBaseline(accuracyContainer, correctCharactersContainer, incorrectCharactersContainer);
+        if (i === 0) {
+            goAgainBtn.addEventListener("click", () => {
+                baselineContainer.classList.add("hidden");
+                pullData();
+            });
+        }
+        else if (i === 1) {
+            goAgainBtn.addEventListener("click", () => {
+                testComplete.classList.add("hidden");
+                pullData();
+            });
+        }
+        else {
+            goAgainBtn.addEventListener("click", () => {
+                highScoreSmashed.classList.add("hidden");
+                pullData();
+            });
+        }
+        showResults(wpmContainer, accuracyContainer, correctCharactersContainer, incorrectCharactersContainer);
     });
+    if (bestWPM === null) {
+        bestWPM = wpmNow;
+        baselineContainer.classList.remove("hidden");
+    }
+    else if (bestWPM >= wpmNow) {
+        testComplete.classList.remove("hidden");
+    }
+    else {
+        bestWPM = wpmNow;
+        highScoreSmashed.classList.remove("hidden");
+    }
+    bestWpmResult.innerText = ` ${bestWPM} WPM`;
 };
