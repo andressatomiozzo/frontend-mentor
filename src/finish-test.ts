@@ -63,6 +63,8 @@ export const finishTest = () => {
       });
     }
 
+
+    
     showResults(wpmContainer, accuracyContainer, correctCharactersContainer, incorrectCharactersContainer);
   });
   if (bestWPM === null) {
