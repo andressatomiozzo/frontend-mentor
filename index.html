@@ -47,6 +47,7 @@
           </select>
         </div>
       </div>
+      <hr />
       <div class="start-container">
         <button class="start btn">Start typing test</button>
         <span>Or press the "Enter" key to start typing.</span>
@@ -55,42 +56,32 @@
         <p id="message"></p>
         <input type="text" id="textInput" autocomplete="off" />
       </div>
-
+      <hr />
       <button class="restart btn">Restart test</button>
     </div>
-    <div id="baseline-container">
+    <div class="results hidden" id="baseline-container">
       <div class="result-img"></div>
       <h2>Baseline Established!</h2>
       <p>You've set the bar. Now the real challenge begins - time to beat it.</p>
       <ul>
-        <span class="small-text">WPM:</span>
-        <span class="big-text wpm-container"></span>
+        <li>
+          <span class="label">WPM:</span>
+          <span class="big-text wpm-container"></span>
+        </li>
+        <li>
+          <span class="label">Accuracy:</span>
+          <span class="big-text accuracy-container"></span>
+        </li>
+        <li>
+          <span class="label">Characters:</span>
+          <div>
+            <span class="big-text correctCharacters-container"></span>
+            <span class="big-text">/</span>
+            <span class="big-text incorrectCharacters-container"></span>
+          </div>
+        </li>
       </ul>
-      <li>
-        <span class="small-text">Accuracy:</span>
-        <span class="big-text accuracy-container"></span>
-      </li>
-      <li>
-        <span class="small-text">Characters:</span>
-        <span class="big-text correctCharacters-container"></span>
-        <span class="big-text wrongCharacters-container"></span>
-      </li>
-    </div>
-
-    <div>
-      <div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <span id="correctCount"></span>
-        <span id="errorCount"></span>
-      </div>
+      <button class="result-btn btn">Beat this score</button>
     </div>
 
     <footer>

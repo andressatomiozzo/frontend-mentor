@@ -5,25 +5,27 @@ const levelInput = document.querySelector<HTMLSelectElement>("#level");
 const timeSelect = document.querySelector<HTMLSelectElement>("#time");
 const restartBtn = document.querySelector<HTMLButtonElement>(".restart");
 const textInput = document.querySelector<HTMLInputElement>("#textInput");
-const correctCount = document.querySelector<HTMLSpanElement>("#correctCount");
-const errorCount = document.querySelector<HTMLSpanElement>("#errorCount");
 const timeContainer = document.querySelector<HTMLSpanElement>(".time-container");
-const wpmContainer = document.querySelector<HTMLSpanElement>(".wpm-container");
-const accuracyContainer = document.querySelector<HTMLSpanElement>(".accuracy-container");
+const wpmContainer = document.querySelectorAll<HTMLSpanElement>(".wpm-container");
+const accuracyContainer = document.querySelectorAll<HTMLSpanElement>(".accuracy-container");
+const correctCharactersContainer = document.querySelector<HTMLSpanElement>(".correctCharacters-container");
+const incorrectCharactersContainer = document.querySelector<HTMLSpanElement>(".incorrectCharacters-container");
+const baselineContainer = document.querySelector<HTMLDivElement>("#baseline-container");
 
 if (
   !message ||
   !levelInput ||
   !timeSelect ||
   !textInput ||
-  !correctCount ||
-  !errorCount ||
   !timeContainer ||
   !accuracyContainer ||
   !wpmContainer ||
   !restartBtn ||
   !startBtn ||
-  !startContainer
+  !startContainer ||
+  !correctCharactersContainer ||
+  !incorrectCharactersContainer ||
+  !baselineContainer
 )
   throw new Error("Some element is not linked to the DOM.");
 
@@ -51,11 +53,9 @@ const reset = () => {
   correct = 0;
   error = 0;
   messageSpans[0].classList.add("active");
-  correctCount.innerText = `Number of correct characters: ${correct}`;
-  errorCount.innerText = `Number of incorrect characters: ${error} Total number of incorrect characters: ${errorTotal.length}`;
   timeContainer.innerText = `0:00`;
-  wpmContainer.innerText = `0`;
-  accuracyContainer.innerText = `100%`;
+  wpmContainer.forEach((e) => (e.innerText = `0`));
+  accuracyContainer.forEach((e) => (e.innerText = `100%`));
   stopTimer();
 };
 
@@ -129,14 +129,27 @@ let endTime = 0;
 let errorTotal: number[] = [];
 let correct = 0;
 let error = 0;
+let accuracy = 100;
 
 import { startTimerFree, startTimer60, stopTimer, wpmCounter, finalTimer } from "./timer.js";
 
+const finishBaseline = () => {
+  baselineContainer.classList.remove("hidden");
+  if (accuracy >= 95) {
+    accuracyContainer[1].classList.add("correct");
+  } else {
+    accuracyContainer[1].classList.add("incorrect");
+  }
+  correctCharactersContainer.classList.add("correct");
+  incorrectCharactersContainer.classList.add("incorrect");
+};
+
 const finishTest = () => {
   console.log("You have completed the exercise.");
-  timeContainer.innerText = `Final time: ${finalTimer(startTime)}`;
-  wpmContainer.innerText = `Final WPM: ${wpmCounter(startTime)}`;
+  correctCharactersContainer.innerText = `${correct}`;
+  incorrectCharactersContainer.innerText = `${error}`;
   textInput.disabled = true;
+  finishBaseline();
 };
 
 // ! A cada letra teclada no input vai rodar isso aqui:
@@ -157,7 +170,7 @@ textInput.addEventListener("input", () => {
   error = 0;
 
   // * Mostra o WPM ao vivo
-  wpmContainer.innerText = `${wpmCounter(startTime)}`;
+  wpmContainer.forEach((e) => (e.innerText = `${wpmCounter(startTime)}`));
 
   // Remove todas as classes de tudo, pois quando entrar no for ele vai adicionar
   messageSpans.forEach((span) => span.classList.remove("active", "correct", "incorrect"));
@@ -182,18 +195,14 @@ textInput.addEventListener("input", () => {
     }
 
     // Accuracy
-    let accuracy = Math.floor(((totalLength - errorTotal.length) / totalLength) * 100);
-    accuracyContainer.innerText = `${accuracy < 0 ? 0 : accuracy}%`;
+    accuracy = Math.floor(((totalLength - errorTotal.length) / totalLength) * 100);
+    accuracyContainer.forEach((e) => (e.innerText = `${accuracy < 0 ? 0 : accuracy}%`));
   }
 
   // Acabou o exercício
   if (textInput.value.length >= totalLength) {
     finishTest();
   }
-
-  //Mostra na tela o que foi feito sempre atualizando os dados
-  correctCount.innerText = `Number of correct characters: ${correct}`;
-  errorCount.innerText = `Number of incorrect characters: ${error} Total number of incorrect characters: ${errorTotal.length}`;
 });
 
 restartBtn.addEventListener("click", () => pullData());
