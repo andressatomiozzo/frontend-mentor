@@ -41,6 +41,8 @@ ul {
 
 body {
   height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 /* * ---------------------  headder  ----------------- */
@@ -378,4 +380,20 @@ header > div > img {
   100% {
     transform: translateY(150vh);
   }
+}
+
+/* * ------------ footer ---------------- */
+
+footer {
+  margin: 20px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+footer div{
+  color: var(--Neutral500);
+}
+
+footer a {
+  color: var(--Neutral400);
 }
