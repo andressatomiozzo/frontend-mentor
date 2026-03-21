@@ -10,7 +10,7 @@
   <body>
     <header>
       <h1 class="hidden">Typing Speed Test</h1>
-      <img src="assets/images/logo-small.svg" alt="Logo" />
+      <div id="logo"></div>
       <div id="best-wpm">
         <img src="assets/images/icon-personal-best.svg" alt="Trophy" />
         <span class="small-text">Best: </span>
@@ -19,7 +19,7 @@
     </header>
     <div>
       <div class="page-content">
-        <div>
+        <div class="score-difficulty">
           <ul id="score">
             <li>
               <span class="small-text">WPM:</span>
@@ -36,7 +36,7 @@
               <span class="big-text time-container"></span>
             </li>
           </ul>
-          <div id="dificulty">
+          <div id="difficulty">
             <select name="level" id="level">
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>

@@ -43,6 +43,8 @@ body {
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* * ---------------------  headder  ----------------- */
@@ -55,8 +57,12 @@ header {
   height: 30px;
 }
 
-header > img {
-  height: 25px;
+header #logo {
+  height: 30px;
+  width: 30px;
+  background-image: url(../assets/images/logo-small.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 header > div {
@@ -128,15 +134,15 @@ header > div > img {
   /* border-color: var(--Neutral400); */
 }
 
-/* * ---------------   dificulty  ----------------*/
+/* * ---------------   difficulty  ----------------*/
 
-#dificulty {
+#difficulty {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-#dificulty select {
+#difficulty select {
   text-align: center;
   font-size: 0.9rem;
   padding: 3px;
@@ -390,10 +396,57 @@ footer {
   text-align: center;
 }
 
-footer div{
+footer div {
   color: var(--Neutral500);
 }
 
 footer a {
   color: var(--Neutral400);
+}
+
+@media (min-width: 900px) {
+  header {
+    height: 50px;
+  }
+  header #logo {
+    height: 40px;
+    width: 300px;
+    background-image: url(../assets/images/logo-large.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .score-difficulty {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #score {
+    margin: 0;
+    height: 40px;
+  }
+
+  #score li {
+    flex-direction: row;
+    align-items: center;
+    margin: 0px 20px;
+  }
+  #score span {
+    margin: 0 5px;
+    height: auto;
+  }
+
+  #difficulty select {
+    width: 150px;
+  }
+
+  .res-plain::before {
+    width: 30px;
+    height: 30px;
+  }
+
+  .res-plain::after {
+    width: 50px;
+    height: 50px;
+  }
 }
