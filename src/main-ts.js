@@ -1,4 +1,5 @@
 const message = document.querySelector("#message");
+const alert = document.querySelector("#alert");
 const startContainer = document.querySelector(".start-container");
 const startBtn = document.querySelector(".start");
 const levelInput = document.querySelector("#level");
@@ -14,6 +15,7 @@ const baselineContainer = document.querySelector("#baseline-container");
 const highScoreSmashed = document.querySelector("#high-score-smashed");
 const testComplete = document.querySelector("#test-complete");
 if (!message ||
+    !alert ||
     !levelInput ||
     !timeSelect ||
     !textInput ||
@@ -30,7 +32,7 @@ if (!message ||
     !testComplete)
     throw new Error("Some element is not linked to the DOM.");
 // ! Variáveis para exportar
-export { textInput, timeContainer, resultsContainer, correct, error, accuracy, wpmNow, pullData, bestWpmResult, baselineContainer, highScoreSmashed, testComplete };
+export { textInput, timeContainer, resultsContainer, correct, error, accuracy, wpmNow, pullData, bestWpmResult, baselineContainer, highScoreSmashed, testComplete, alert, messageSpans };
 import { startTimerFree, startTimer60, stopTimer, wpmCounter } from "./timer.js";
 import { finishTest } from "./finish-test.js";
 // ! Para iniciar o teste
@@ -55,6 +57,7 @@ textInput.addEventListener("blur", () => {
 // ! Resetar os valores iniciais
 const reset = () => {
     textInput.value = "";
+    alert.innerText = "";
     started = false;
     startTime = 0;
     endTime = 0;
@@ -117,6 +120,7 @@ const pullData = async () => {
         console.log(err);
     }
     textInput.disabled = false;
+    textInput.focus();
 };
 // ! Váriáveis do tempo, acertos e erros, além do fim do teste
 // * Começar o tempo

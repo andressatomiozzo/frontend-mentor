@@ -43,8 +43,6 @@ body {
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 /* * ---------------------  headder  ----------------- */
@@ -188,6 +186,12 @@ header > div > img {
   100% {
     background-color: rgba(0, 0, 0, 0);
   }
+}
+
+/* *   ----------------------- alerta  -------------------- */
+#alert {
+  text-align: center;
+  color: var(--Red500);
 }
 
 /* * ---------------------  start page  ------------------- */
@@ -376,7 +380,7 @@ header > div > img {
   bottom: 0px;
   left: 0px;
   transition: 0.5s;
-  animation: anima-confeti 10s linear infinite;
+  animation: anima-confeti 10s linear;
 }
 
 @keyframes anima-confeti {
@@ -448,5 +452,13 @@ footer a {
   .res-plain::after {
     width: 50px;
     height: 50px;
+  }
+}
+
+@media (min-width: 1200px) {
+  body, .start-container, .results {
+    width: 1100px;
+    margin-left: auto;
+    margin-right:auto;
   }
 }

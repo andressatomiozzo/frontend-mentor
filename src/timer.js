@@ -1,4 +1,4 @@
-import { timeContainer, textInput } from "./main-ts.js";
+import { timeContainer, textInput, alert, messageSpans } from "./main-ts.js";
 let timerInterval;
 let elapsedTime;
 let formattedTime;
@@ -46,7 +46,9 @@ export const startTimer60 = (startTime) => {
         }
         if (remainingTime === 0) {
             stopTimer();
-            console.log("o tempo acabou");
+            alert.innerText = `Oops, your time is up, try again.`;
+            textInput.disabled = true;
+            messageSpans[textInput.value.length].classList.remove("active");
         }
     }, 100);
 };
